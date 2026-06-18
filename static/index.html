@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Панель мониторинга микроклимата умных теплиц">
+  <title>GreenPulse — мониторинг теплиц</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/dashboard.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="GreenPulse">
+      <span class="brand-mark" aria-hidden="true">G</span>
+      <span>
+        <strong>GreenPulse</strong>
+        <small>smart greenhouse cloud</small>
+      </span>
+    </a>
+    <nav aria-label="Навигация">
+      <a class="active" href="#overview">Обзор</a>
+      <a href="#greenhouses">Теплицы</a>
+      <a href="/docs">API</a>
+    </nav>
+    <span class="live-indicator"><i></i> система онлайн</span>
+  </header>
+
+  <main>
+    <section class="hero" id="overview">
+      <div class="hero-copy">
+        <p class="eyebrow">ЕДИНЫЙ ЦЕНТР УПРАВЛЕНИЯ</p>
+        <h1>Микроклимат,<br><em>который видно.</em></h1>
+        <p class="lead">Температура, влажность, CO₂ и полив — в одной спокойной панели. Данные обновляются из FastAPI-сервиса.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#greenhouses">Смотреть объекты</a>
+          <a class="button secondary" href="/docs">Открыть Swagger ↗</a>
+        </div>
+      </div>
+      <div class="climate-orbit" aria-label="Средняя температура">
+        <div class="orbit-ring ring-one"></div>
+        <div class="orbit-ring ring-two"></div>
+        <div class="orbit-center">
+          <span>средняя</span>
+          <strong id="average-temperature">—</strong>
+          <small>°C</small>
+        </div>
+        <span class="orbit-label label-top">LIVE DATA</span>
+        <span class="orbit-label label-bottom">OPENSTACK READY</span>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Сводные показатели">
+      <article class="metric-card lime">
+        <span>Всего объектов</span>
+        <strong id="total-greenhouses">—</strong>
+        <small>подключено к контуру</small>
+      </article>
+      <article class="metric-card mint">
+        <span>Оптимальный режим</span>
+        <strong id="optimal-greenhouses">—</strong>
+        <small>без отклонений</small>
+      </article>
+      <article class="metric-card coral">
+        <span>Требуют внимания</span>
+        <strong id="attention-required">—</strong>
+        <small>проверьте параметры</small>
+      </article>
+      <article class="metric-card sky">
+        <span>Средняя влажность</span>
+        <strong><b id="average-humidity">—</b>%</strong>
+        <small>по всем секторам</small>
+      </article>
+    </section>
+
+    <section class="objects" id="greenhouses">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ОБЪЕКТЫ</p>
+          <h2>Теплицы и модули</h2>
+        </div>
+        <div class="filters" role="group" aria-label="Фильтр объектов">
+          <button class="filter active" data-filter="all">Все</button>
+          <button class="filter" data-filter="optimal">В норме</button>
+          <button class="filter" data-filter="attention">Внимание</button>
+        </div>
+      </div>
+      <div class="greenhouse-grid" id="greenhouse-grid" aria-live="polite">
+        <p class="loading">Получаем телеметрию…</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>GreenPulse · учебный DevOps-проект</span>
+    <span>Выполнил: Копань Артем Алексеевич</span>
+  </footer>
+</body>
+</html>
+

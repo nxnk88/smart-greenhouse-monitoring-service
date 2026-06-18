@@ -1,0 +1,13 @@
+os_cloud              = "myopenstack"
+image_name            = "Ubuntu 22.04"
+flavor_name           = "m1.small"
+external_network_name = "public"
+
+public_key_path = "~/.ssh/id_ed25519.pub"
+
+docker_image = "YOUR_DOCKERHUB_LOGIN/smart-greenhouse-monitoring-service:v1"
+
+ssh_cidr        = "0.0.0.0/0"
+app_cidr        = "0.0.0.0/0"
+dns_nameservers = ["1.1.1.1", "8.8.8.8"]
+

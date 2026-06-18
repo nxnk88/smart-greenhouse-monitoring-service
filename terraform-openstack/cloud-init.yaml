@@ -1,0 +1,51 @@
+#cloud-config
+package_update: true
+
+write_files:
+  - path: /root/run-greenhouse-monitor.sh
+    permissions: "0755"
+    owner: root:root
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+
+      exec > >(tee -a /var/log/greenhouse-monitor-bootstrap.log) 2>&1
+      export DEBIAN_FRONTEND=noninteractive
+
+      echo "[bootstrap] starting smart greenhouse monitoring service setup"
+
+      systemctl enable ssh || true
+      systemctl start ssh || true
+      ufw disable || true
+      iptables -I INPUT -p tcp --dport 22 -j ACCEPT || true
+      iptables -I INPUT -p tcp --dport 8000 -j ACCEPT || true
+
+      for attempt in 1 2 3; do
+        if apt-get update && apt-get install -y ca-certificates curl openssh-server; then
+          break
+        fi
+        echo "[bootstrap] apt base package install failed, retry $attempt/3"
+        sleep 15
+      done
+
+      systemctl enable ssh || true
+      systemctl restart ssh || true
+
+      if ! command -v docker >/dev/null 2>&1; then
+        apt-get install -y docker.io || curl -fsSL https://get.docker.com | sh
+      fi
+
+      systemctl enable docker
+      systemctl restart docker
+
+      docker pull ${docker_image}
+      docker rm -f greenhouse-monitor || true
+      docker run -d \
+        --name greenhouse-monitor \
+        --restart unless-stopped \
+        -p 8000:8000 \
+        ${docker_image}
+
+runcmd:
+  - /root/run-greenhouse-monitor.sh
+
